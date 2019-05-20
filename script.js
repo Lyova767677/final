@@ -1,20 +1,20 @@
-//knchum enq socket.io ev haytarum en side canvasi hamar
+
 var side = 20;
 var socket = io();
-//haytarum enq popoxakan exanaki hamar vory kereva menak script.js-um
+
 var weatherclient = "Summer";
-//serveri exanaky beruma talisa cleintin
+
 socket.on("exanak", function (w) {
     weatherclient = w;
-    // console.log(weather);
+   
 });
-//setup
+
 function setup() {
-    createCanvas(20 * side, 20 * side);
+    createCanvas(50 * side, 50 * side);
     background('#silver');
 }
 
-//haytararum enq function vory kashxati exanaky stanalu depqum,w parametrov kga serveri exanaky
+
 function drawWeather(w) {
     var p = document.getElementById('seasons');
     var weather = w;
@@ -22,17 +22,19 @@ function drawWeather(w) {
 
     if (weather == "Summer") {
         p.innerText = "Summer";
-    } else if (weather == "Winter") {
-        p.innerText = "Winter";
-    } else if (weather == "Autumn") {
+    }
+    else if (weather == "Autumn") {
         p.innerText = "Autumn";
-    } else if (weather == "Spring") {
+    }
+    else if (weather == "Winter") {
+        p.innerText = "Winter";
+    }
+    else if (weather == "Spring") {
         p.innerText = "Spring";
     }
-
 }
 
-//draw functiony uxaki serveric ekac matrixi hashvin 
+
 function drawMatrix(matrix) {
 
 
@@ -47,11 +49,14 @@ function drawMatrix(matrix) {
             else if (matrix[y][x] == 1) {
                 if (weatherclient == "Summer") {
                     fill("green");
-                } else if (weatherclient == "Spring" || weatherclient == "Autumn") {
+                } else if (weatherclient == "Autumn") {
                     fill("#A79F15");
                 }
                 else if (weatherclient == "Winter") {
                     fill("white");
+                }
+                else if (weatherclient == "Spring") {
+                    fill("#96B917");
                 }
                 rect(x * side, y * side, side, side);
             }
@@ -76,41 +81,42 @@ function drawMatrix(matrix) {
                 fill("blue");
                 rect(x * side, y * side, side, side);
             }
+
         }
     }
 }
 
-//yndunuma serveric matrixy ev kanchuma drawMatrix
+
 socket.on("matrix", drawMatrix);
-//yndunuma exanaky serveric ev nkaruma exanaky
+
 socket.on("exanak", drawWeather);
 
-//function event
-function mousePressed() {
 
+function WinterPressed() {
+
+    socket.emit("Winter");
+}
+function SummerPressed() {
+
+    socket.emit("Summer");
+}
+function SpringPressed() {
+
+    socket.emit("Spring");
+}
+function AutumnPressed() {
+
+    socket.emit("Autumn");
+}
+function truePressed() {
+
+    socket.emit("true");
+}
+ 
+function mousePressed() {
     var x = Math.floor(mouseX / side);
     var y = Math.floor(mouseY / side);
     arr = [x, y];
     console.log(arr);
-    socket.emit("Sxmvec", arr)
-
-}
-//function
-// function keyPressed() {
-//     if (keyCode == LEFT_ARROW) {
-//          var left = "left"
-//     } else if (keyCode == RIGHT_ARROW) {
-//          var right = "right"
-//     } else if (keyCode == UP_ARROW) {
-//         var up = "up"
-//     } else if (keyCode == DOWN_ARROW) {
-//           var down = "down"
-//     }
-//      data = {
-//         keyleft: left,
-//         keyright: right,
-//         keyup: up,
-//         keydown : down
-//     }
-//     socket.emit("keyevent", data) ;
-// }
+    socket.emit("Sxmvec", arr);
+  }
