@@ -51,11 +51,11 @@ function genMatrix(w, h) {
         matrix[y] = [];
         for (var x = 0; x < w; x++) {
             var r = Math.floor(Math.random() * 100);
-            if (r < 5) r = 0;
-            else if (r < 40) r = 1;
-            else if (r < 55) r = 2;
+            if (r < 3) r = 0;
+            else if (r < 30) r = 1;
+            else if (r < 45) r = 2;
             else if (r < 80) r = 3;
-            else if (r < 98) r = 4;
+            else if (r < 99) r = 4;
             else if (r < 100) r = 5;
             matrix[y][x] = r;
         }
@@ -197,8 +197,9 @@ io.on('connection', function (socket) {
         var x = arr[0];
         var y = arr[1];
 
+
         if (x > 0 && y > 0 && y < matrix.length && x < matrix[0].length) {
-            
+
 
             if (matrix[y][x] == 1) {
                 for (var i in grassArr) {
@@ -246,7 +247,74 @@ io.on('connection', function (socket) {
                 }
             }
             matrix[y][x] = 0;
+
+
+            directions = [
+                [x - 1, y - 1],
+                [x, y - 1],
+                [x + 1, y - 1],
+                [x - 1, y],
+                [x + 1, y],
+                [x - 1, y + 1],
+                [x, y + 1],
+                [x + 1, y + 1]];
+
+            for (var i in directions) {
+                urishx = directions[i][0];
+                urishy = directions[i][1];
+                if (urishx >= 0 && urishx < matrix[0].length && urishy >= 0 && urishy < matrix.length) {
+                    if (matrix[urishy][urishx] == 1) {
+                        for (var i in grassArr) {
+                            if (urishy == grassArr[i].y && urishx == grassArr[i].x) {
+                                grassArr.splice(i, 1);
+                                break;
+                            }
+
+                        }
+                    }
+                    else if (matrix[urishy][urishx] == 2) {
+                        for (var i in grasseaterArr) {
+                            if (urishy == grasseaterArr[i].y && urishx == grasseaterArr[i].x) {
+                                grasseaterArr.splice(i, 1);
+                                break;
+                            }
+
+                        }
+                    }
+                    else if (matrix[urishy][urishx] == 3) {
+                        for (var i in predatorArr) {
+                            if (urishy == predatorArr[i].y && urishx == predatorArr[i].x) {
+                                predatorArr.splice(i, 1);
+                                break;
+                            }
+
+                        }
+                    }
+                    else if (matrix[urishy][urishx] == 4) {
+                        for (var i in bombArr) {
+                            if (urishy == bombArr[i].y && urishx == bombArr[i].x) {
+                                bombArr.splice(i, 1);
+                                break;
+                            }
+
+                        }
+                    }
+                    else if (matrix[urishy][urishx] == 5) {
+                        for (var i in peopleArr) {
+                            if (urishy == peopleArr[i].y && urishx == peopleArr[i].x) {
+                                peopleArr.splice(i, 1);
+                                break;
+                            }
+
+                        }
+                    }
+                    matrix[urishy][urishx] = 0;
+
+                }
+            }
         }
+
+
     });
     io.sockets.emit("martix", matrix);
 
