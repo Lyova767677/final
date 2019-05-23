@@ -52,8 +52,8 @@ function genMatrix(w, h) {
         for (var x = 0; x < w; x++) {
             var r = Math.floor(Math.random() * 100);
             if (r < 3) r = 0;
-            else if (r < 30) r = 1;
-            else if (r < 45) r = 2;
+            else if (r < 50) r = 1;
+            else if (r < 70) r = 2;
             else if (r < 80) r = 3;
             else if (r < 99) r = 4;
             else if (r < 100) r = 5;
